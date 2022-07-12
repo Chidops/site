@@ -1,9 +1,45 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 
 from main.models import *
 
-menu = ["О сайте", "Добавить статью", "Обратная связь", "Войти"]
+from main.forms import AddPostForm
+
+menu = [{'title': 'Главная', 'url_name': 'home'},
+        {'title': 'О сайте', 'url_name': 'about'},
+        {'title': 'Добавить статью', 'url_name': 'add_page'},
+        {'title': 'Войти', 'url_name': 'login'}
+        ]
+
+
+def addpage(request):
+    if request.method == 'POST':
+        form = AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = AddPostForm()
+    return render(request, 'main/addpage.html', {'form': form, 'menu': menu, 'title': 'Добавление статьи'})
+
+
+def contact(request):
+    return HttpResponse('')
+
+
+def login(request):
+    return HttpResponse('')
+
+
+def show_post(request, post_slug):
+    post = get_object_or_404(Post, pk=post_slug)
+    context = {
+        'posts': post,
+        'menu': menu,
+        'title': post.title,
+        'cat_selected': post.cat_id,
+    }
+    return render(request, 'main/post.html', context=context)
 
 
 def show_category(request, cat_id):
@@ -23,13 +59,11 @@ def show_category(request, cat_id):
     return render(request, 'main/index.html', context=context)
 
 
-def index(request, cat_id):
+def index(request):
     posts = Post.objects.all()
-    cats = Category.objects.all()
 
     context = {
         'posts': posts,
-        'cats': cats,
         'menu': menu,
         'title': 'Главная страница',
         'cat_selected': 0,
