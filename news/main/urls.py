@@ -9,6 +9,7 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('addpage/', views.addpage, name='add_page'),
     path('cats/<slug:cat>', views.categories),
+    path('register/', views.RegisterUser.as_view(), name='register'),
     re_path(r'^archive/(?P<year>[0-9]{4})/', views.archive)
 ]
 

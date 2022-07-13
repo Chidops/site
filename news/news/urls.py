@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from news import settings
 from main.views import *
+from main import views
 
 
 urlpatterns = [
+    path('', views.skip, name='base'),
     path('admin/', admin.site.urls),
     path('blog/', include('main.urls')),
 ]
@@ -28,4 +30,4 @@ urlpatterns = [
 handler404 = page_not_found
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
