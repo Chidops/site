@@ -12,7 +12,7 @@ from main.utils import DataMixin
 
 menu = [{'title': 'О сайте', 'url_name': 'about'},
         {'title': 'Добавить статью', 'url_name': 'add_page'},
-        {'title': 'Обратная связь', 'url_name': 'contact'},
+        {'title': 'Обратная связь', 'url_name': 'feedback'},
         #{'title': 'Войти', 'url_name': 'login'}
         ]
 
@@ -67,10 +67,6 @@ def logout_user(request):
     return redirect('login')
 
 
-def contact(request):
-    return HttpResponse('Обратная связь')
-
-
 class ShowPost(DataMixin, DetailView):
     model = Post
     template_name = 'main/post.html'
@@ -120,6 +116,10 @@ class BlogHome(ListView):
 
 def about(request):
     return render(request, 'main/about.html', {'menu': menu, 'title': 'О нас'})
+
+
+def feedback(request):
+    return render(request, 'main/feedback.html', {'menu': menu, 'title': 'Обратная связь'})
 
 
 def categories(request, cat):
